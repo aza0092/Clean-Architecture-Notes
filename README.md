@@ -14,6 +14,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 8. [Design Principles of SOLID: OCP](#ocp)
 9. [Design Principles of SOLID: LSP](#lsp)
 10. [Design Principles of SOLID: ISP](#isp)
+11. [Design Principles of SOLID: DIP](#dip)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -70,7 +71,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - We could therefore not update or delete anything, and thus making our application immutable, therefore **functional**
 - Event Sourcing ensures that all changes to application state are stored as a sequence of events
 
-# <a name="srp">7. SRP: The Single Responsibility Principle</a> 
+# <a name="srp">7. SOLID Principles</a> 
 
 - The SOLID principles tell us how to arrange our functions and data structures into classes, and how those classes should be interconnected
 - The goal of SOLID for software is to:
@@ -90,7 +91,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
   * **5. DIP: The Dependency Inversion Principle**
     * The code that implements high-level policy should not depend on code that implements low-level details. Rather, details should depend on policies
 
-## The Single Responsibility Principle (SRP)
+# The Single Responsibility Principle (SRP)
 - It is wrong to assume that SRP means that every module should do just one thing. There is a principle like that, a function should do one thing
 - Software systems are changed to satisfy users and stakeholders; those users and stakeholders are the “reason to change” that the principle is talking about
 - But since users/skateholders change, we'll refer to them as actors
@@ -182,7 +183,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - To adjust to LSP principle in this example, we add mechanisms to the User (such as an if statement) that detects whether the `Rectangle` is a Square
 - Since the behavior of the User depends on the types it uses, those types are not substitutable
 
-# <a name="lsp">10. ISP: The Interface Segregation Principle</a> 
+# <a name="isp">10. ISP: The Interface Segregation Principle</a> 
 
 ![isp](/img/isp.PNG)
 - **Definition:** Clients should not be forced to depend upon interfaces that they do not use
@@ -198,3 +199,26 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 
 ![architect](/img/architect.PNG)
 - We see that S depends on F, and F depends on D. Any changes in D will force redeployment in S and F, which can cause issues
+
+# <a name="dip">10. DIP: The Dependency Inversion Principle</a> 
+- DIP tells us that the most flexible systems are those in which source code dependencies refer only to abstractions, not to concretions
+- In other words, 'import', 'use', and 'include' should refer to interfaces and abstract classes only, not concrete classes
+- Rules of DIP:
+  * Don't refer to volatile concrete classes: refer to Abstract/interfaces instead
+  * Don’t derive from volatile concrete classes
+  * Don’t override concrete functions
+  * Never mention the name of anything concrete and volatile
+  
+## Example: Abstract Factory
+
+![Abstract-Factory](/img/Abstract-Factory.PNG)
+- The `Application` uses the `ConcreteImpl` through the `Service` interface
+- However, the `Application` must somehow create instances of the `ConcreteImpl`
+- To achieve this, without creating a source code dependency on the `ConcreteImpl`, the `Application` calls the `makeSvc` method of the `ServiceFactory` interface
+- This method is implemented by the `ServiceFactoryImpl` class, which derives from `ServiceFactory`
+- That implementation instantiates the `ConcreteImpl` and returns it as a `Service`
+- The curved line is an architectural boundary. It separates the abstract from the concrete
+- The curved line divides the system into 2 components: abstract - concrete
+- The *abstract* component contains all the high-level business rules of the application. The *concrete* component contains all the implementation details that those business rules manipulate
+- Note the flow of control crosses the curved line in the opposite direction of the source code dependencies
+- The source code dependencies are inverted against the flow of control—which is why we refer to this principle as **Dependency Inversion**
