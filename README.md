@@ -13,6 +13,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 7. [Design Principles of SOLID: SRP](#srp)
 8. [Design Principles of SOLID: OCP](#ocp)
 9. [Design Principles of SOLID: LSP](#lsp)
+10. [Design Principles of SOLID: ISP](#isp)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -181,4 +182,19 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - To adjust to LSP principle in this example, we add mechanisms to the User (such as an if statement) that detects whether the `Rectangle` is a Square
 - Since the behavior of the User depends on the types it uses, those types are not substitutable
 
+# <a name="lsp">10. ISP: The Interface Segregation Principle</a> 
 
+![isp](/img/isp.PNG)
+- **Definition:** Clients should not be forced to depend upon interfaces that they do not use
+- Imagine if *User1* uses only op1, and *User2* uses only op2, and *User3* uses only op3
+- When we run a program with this class, *User1* will still depend on op2 and op3 even though it doesn't call them
+- Any change to op2 and op3 will force *User1* to be recompiled
+- **The fix** here is to segregate the operations into interfaces as shown below
+
+![segregate-ops](/img/Segregate.PNG)
+-  **ISP is a language issue, rather than an architecture issue.** This is because the above program would not run into issues at run time in a dynamically type language like Python
+
+### Another example that violates ISP
+
+![architect](/img/architect.PNG)
+- We see that S depends on F, and F depends on D. Any changes in D will force redeployment in S and F, which can cause issues
