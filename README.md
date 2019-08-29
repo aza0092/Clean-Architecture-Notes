@@ -11,6 +11,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 5. [Object Orient Programming](#oop)
 6. [Functional programming](#functional)
 7. [Design Principles of SOLID: SRP](#srp)
+8. [Design Principles of SOLID: OCP](#ocp)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -92,7 +93,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - Software systems are changed to satisfy users and stakeholders; those users and stakeholders are the “reason to change” that the principle is talking about
 - But since users/skateholders change, we'll refer to them as actors
 - Thus, the **definition** of The Single Responsibility Principle (SRP) is: 
-  * A module should be responsible to one, and only one, actor
+  * **A module should be responsible to one, and only one, actor**
 - What we mean by a module is just basically a source file or set of functions
 
 ## Violations of SRP
@@ -109,9 +110,53 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 ### 2. Merges
 - Multiple people changing the same source file for different reasons causes risks
 - One solution is to **seperate code that supports different actors**
+
 ![seperate-data-from-functions](/img/employeeData.PNG)
 - One way to solve the above `Employee` class is to seperate data from functions
 ![facade-pattern](/img/facade.png)
+
 - However, the downside of this is developers now have 3 classes they have to instantiate and track. A common solution here is to use the Facade pattern
 ![keep-important-functions-in-Employee](/img/originalEmployee.png)
+
 - The `EmployeeFacade` contains very little code, so the solution is to keep the most important method in the original `Employee` class and then using that class as a Facade for the lesser functions, like above
+
+# <a name="srp">8. OCP: The Open-Closed Principle</a> 
+- The definition of OCP is: **A software artifact should be open for extension but closed for modification**
+- In other words, the behavior of a software artifact ought to be extendible, without having to modify that artifact
+## Example: Financial Information
+- We have a webapp that displays summary of financial info that is scrollable and display negative numbers in red color
+- A request was made to print a repot in only black and white
+- A good software architecture here would reduce the amount of changed code via:
+  * Separating the things that change for different reasons (SRP) and then organizing the dependencies between those things properly (DIP)
+### SRP Approach
+- Following SRP would result in a plan like this: 
+  
+![Following-SRP-Principle](/img/SRP-Plan.PNG)
+- The essential insight here is that generating the report involves 2 separate responsibilities: 
+  * The calculation of the reported data
+  * The presentation of the data
+ 
+![Partitioning-Classes](/img/Partitioning-Classes.png)
+- This sepeation can be done, like above, by having a: **Controller - Interactor - Database - Presenter - Views**
+- Open arrowheads are using relationships. Closed arrowheads are implements or inheritance relationships
+- Notice that each double line is crossed in one direction only. This means that all component relationships are unidirectional
+- `FinancialDataMapper` knows about `FinancialDataGateway` through an implements relationship, but `FinancialGateway` knows nothing at all about `FinancialDataMapper`
+
+### Protection Levels
+
+![unidirectional](/img/unidirectional.png)
+- We can see that we have arrows that point toward the components that **we want to protect from change**
+- If component A should be protected from changes in component B, then component B should depend on component A
+- We want to protect the **Controller** from changes in the **Presenters**
+- We want to protect the **Presenters** from changes in the **Views**
+- We want to protect the **Interactor** from changes in—well, anything
+- Changes to the Database, or the Controller, or the Presenters, or the Views, will have **no impact on the Interactor**
+- Why should we protect the Interactor? Because it contains the business rules, and the highest-level policies
+- Notice how there's **levels of protection:**
+  * Interactor has the highest level, Controller is next, then the Presenter, and last is the Views
+- **This is how the OCP works: it separates functionality based on how, why, and when it changes, and then organize them into protection levels**
+
+### Information Hiding
+- The `FinancialReportRequester` interface purpose is to protect the `FinancialReportController` from knowing too much about the `Interactor`
+- If the interface were not there, the *Controller* would have transitive dependencies on the `FinancialEntities`
+- Our first priority is to protect the *Interactor* from changes to the *Controller*, but we also want to protect the *Controller* from changes to the *Interactor* by hiding the internals of the *Interactor*
