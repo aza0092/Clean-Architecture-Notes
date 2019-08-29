@@ -12,6 +12,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 6. [Functional programming](#functional)
 7. [Design Principles of SOLID: SRP](#srp)
 8. [Design Principles of SOLID: OCP](#ocp)
+9. [Design Principles of SOLID: LSP](#lsp)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -160,3 +161,24 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - The `FinancialReportRequester` interface purpose is to protect the `FinancialReportController` from knowing too much about the `Interactor`
 - If the interface were not there, the *Controller* would have transitive dependencies on the `FinancialEntities`
 - Our first priority is to protect the *Interactor* from changes to the *Controller*, but we also want to protect the *Controller* from changes to the *Interactor* by hiding the internals of the *Interactor*
+
+# <a name="lsp">9. LSP: The Liskov Substitution Principle</a> 
+- **Definition:** What is wanted here is something like the following substitution property: If for each object o1 of type S there is an object o2 of type T such that for all programs P defined in terms of T, the behavior of P is unchanged when o1 is substituted for o2 then S is a subtype of T
+
+### Example that follows LSP: 
+
+![License](/img/License.PNG)
+- This design conforms to LSP because: the behavior of the `Billing` does not depend on any of the 2 subtypes Both of the subtypes are substitutable for the `License` class
+
+## Example that violates LSP: The Square/Rectangle Problem
+
+![square-rectangle](/img/square-rectangle-prb.PNG)
+
+- Above, `Square` is not a proper subtype of `Rectangle` because the height and width of the Rectangle are independently mutable
+- In contrast, the height and width of the `Square` must change together
+- Since the User believes it is communicating with a `Rectangle`, it could easily get confused
+### Fix
+- To adjust to LSP principle in this example, we add mechanisms to the User (such as an if statement) that detects whether the `Rectangle` is a Square
+- Since the behavior of the User depends on the types it uses, those types are not substitutable
+
+
