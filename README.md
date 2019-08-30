@@ -22,6 +22,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 16. [Independence](#independence) 
 17. [Boundaries: Drawing Lines](#drawing-lines) 
 18. [Boundary Anatomy](#anatomy) 
+19. [Policy and Level](#policy-level) 
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -344,3 +345,26 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 ![crossing-boundaries](/img/crossing-boundaries.png)
 - All dependencies cross the boundary from right to left toward the higher-level component
 - High-level components remain independent of lower-level details
+
+# <a name="policy-level">19. Boundaries: Policy and Level</a> 
+
+### Level
+
+![encryption-prg](/img/encryption-prg.PNG)
+- “level” is “the distance from the inputs and outputs.”
+- The farther a policy is from both the inputs and the outputs of the system, the higher its level
+- The policies that manage input and output are the lowest level policies in the system
+- In the diagram above, `Translate` is the highest-level component because it is the farthest from the inputs and outputs
+```java
+function encrypt() {
+ while(true)
+ writeChar(translate(readChar()));
+}
+```
+- This example is an incorrect architecture because the high-level `encrypt` function depends on the lower-level `readChar` and `writeChar` functions
+
+![better-encryption-prg](/img/better-encryption.PNG)
+- A better architecture is shown above, all dependencies point inward
+- `ConsoleReader` and `ConsoleWrite` are low level because they are close to the inputs and outputs
+- **This structure decouples the high-level encryption policy from the lower-level input/output policies**
+- This makes the encryption policy usable in a wide range of contexts. When changes are made to the input and output policies, they are not likely to affect the encryption policy
