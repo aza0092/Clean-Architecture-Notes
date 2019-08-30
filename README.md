@@ -18,6 +18,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 12. [Components](#components)
 13. [Component Principles: Cohesion](#cohesion) 
 14. [Component Principles: Coupling](#coupling) 
+15. [Architecture](#architecture) 
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -286,3 +287,15 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 ### Eliminating Dependency Cycles
 - The components become units of work that can be the responsibility of a single developer/developers
 - However, you must manage the dependency structure of the components. There can be no cycles
+
+# <a name="architecture">15. Architecture</a> 
+- The primary purpose of architecture is to support the life cycle of the system
+- Good architecture makes the system easy to understand, easy to develop, easy to maintain, and easy to deploy
+- The ultimate goal is to minimize the lifetime cost of the system and to maximize programmer productivity
+- Software architect provides the best development, deployment, operation, and maintainance
+- Software systems need to allow for open option to aid in flexibility
+- It is not necessary to choose the following early in the development process because the high-level policy should not care/know:
+  * Database system
+  * web server
+  * REST 
+  * dependency framework.... etc
