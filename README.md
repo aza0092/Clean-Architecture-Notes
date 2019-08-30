@@ -19,6 +19,8 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 13. [Component Principles: Cohesion](#cohesion) 
 14. [Component Principles: Coupling](#coupling) 
 15. [Architecture](#architecture) 
+16. [Independence](#independence) 
+17. [Boundaries: Drawing Lines](#drawing-lines) 
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -299,3 +301,32 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
   * web server
   * REST 
   * dependency framework.... etc
+  
+# <a name="independence">16. Independence</a> 
+- Decoupling modes can exist in 3 level: Source level - Deployment level - Service level
+
+# <a name="drawing-lines">17. Boundaries: Drawing Lines</a> 
+
+![boundaries](/img/boundaries.PNG)
+- Which kinds of decisions are premature? Decisions that have nothing to do with the business requirements—the use cases—of the system
+- These include decisions about frameworks, databases, web servers, utility libraries, dependency injection, and the like
+- A good system architecture allows those decisions to be made at the latest possible moment, without significant impact
+- It is important to postpone what tool to use for development until later on.
+- For example, instead of straight away using MySQL, consider data access methods into an interface and provide functionality for those methodsto find and fetch data
+- **This example shows how you draw boundaries between business rules and databases**
+- The database is a tool that the business rules can use *indirectly*. The business rules don’t need to know about the schema, or the query language, or any of the other details
+
+### What About Input and Output?
+
+![GUI-Boundary](/img/GUI-Boundary.PNG)
+- It is wrong to define a system in terms of the GUI, and believe that you should see the GUI start working immediately about the database
+- Consider a video game, for example. Your experience is dominated by the interface: the screen, the mouse, the buttons, and the sound
+- Behind the interface, there is a model—a sophisticated set of data structures and functions driving it
+- **The interface should not matter to the model or the business rules**
+- The `GUI` could be replaced with any other kind of interface, and the `BusinessRules` would not care
+- Architects should think there would be different kinds of user interfaces for their system. They could be web based, client/server based, SOA based, Console based etc
+
+### Conclusion
+- To draw boundary lines in software, you first partition the system into components. Some of those components are core business rules; others are functions that are not directly related to the core business
+- GUIs and DBs change at different times and at different rates than business rules, so there should be a boundary between them
+- This is simply the Single Responsibility Principle again. The SRP tells us where to draw our boundaries
