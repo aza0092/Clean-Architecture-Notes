@@ -24,6 +24,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 18. [Boundary Anatomy](#anatomy) 
 19. [Policy and Level](#policy-level) 
 20. [Business Rules](#business-rules) 
+21. [The Clean Architecture](#clean-architecture)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -394,3 +395,25 @@ function encrypt() {
 - The use case accepts simple request data structures for its input, and returns simple response data structures as its output
 - These data structures are not dependent on anything. They do not derive from standard framework interfaces such as HttpRequest and HttpResponse. They know nothing of the web, nor do they share any of the trappings of whatever user interface 
 - This lack of dependencies is critical
+
+# <a name="clean-architecture">21. Boundaries: The Clean Architecture</a>
+- A good architectures produces systems that have the following characteristics:
+  * **Independent of frameworks:** does not depend on libraries or frameworks, which let go of limited constraints
+  * **Testable:** The business rules can be tested without the UI, database, web server, or any other external element
+  * **Independent of the UI:** The UI can change easily, without changing the rest of the system
+  * **Independent of the database:** You can swap out SQL for Mongo, or something else. Your business rules are not bound to the database
+  * **Independent of any external agency:** your business rules don’t know anything at all about the interfaces to the outside world
+
+### Dependency Rules
+
+![clean-architecture](/img/clean-architecture.PNG)
+- Nothing in an inner circle can know anything at all about something in an outer circle. 
+- The name of something declared in an outer circle must not be mentioned by the code in an inner circle. That includes functions, classes, variables, or any other named software entity
+
+### Example: web-based Java system utilizing a database
+
+![webap-db](/img/webap-db.png)
+
+![exp-figure](/img/exp-figure.PNG)
+
+![exp-figure(2)](/img/exp-figure(2).PNG)
