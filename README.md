@@ -21,6 +21,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 15. [Architecture](#architecture) 
 16. [Independence](#independence) 
 17. [Boundaries: Drawing Lines](#drawing-lines) 
+18. [Boundary Anatomy](#anatomy) 
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -330,3 +331,16 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - To draw boundary lines in software, you first partition the system into components. Some of those components are core business rules; others are functions that are not directly related to the core business
 - GUIs and DBs change at different times and at different rates than business rules, so there should be a boundary between them
 - This is simply the Single Responsibility Principle again. The SRP tells us where to draw our boundaries
+
+# <a name="anatomy">18. Boundaries: Boundary Anatomy</a> 
+- System boundaries come in many form, we'll discuss: boundary crossing - The Dreaded Monolith
+
+### Boundary Crossing
+- Boundary crossing is nothing more than a function on one side of the boundary calling a function on the other side and passing along some data
+- Creating an appropriate boundary crossing is to manage the source code dependencies
+
+### The Dreaded Monolith
+
+![crossing-boundaries](/img/crossing-boundaries.png)
+- All dependencies cross the boundary from right to left toward the higher-level component
+- High-level components remain independent of lower-level details
