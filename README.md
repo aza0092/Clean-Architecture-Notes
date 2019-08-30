@@ -23,6 +23,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 17. [Boundaries: Drawing Lines](#drawing-lines) 
 18. [Boundary Anatomy](#anatomy) 
 19. [Policy and Level](#policy-level) 
+20. [Business Rules](#business-rules) 
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -355,16 +356,41 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - The farther a policy is from both the inputs and the outputs of the system, the higher its level
 - The policies that manage input and output are the lowest level policies in the system
 - In the diagram above, `Translate` is the highest-level component because it is the farthest from the inputs and outputs
+- The example below is an incorrect architecture because the high-level `encrypt` function depends on the lower-level `readChar` and `writeChar` functions
 ```java
 function encrypt() {
  while(true)
  writeChar(translate(readChar()));
 }
 ```
-- This example is an incorrect architecture because the high-level `encrypt` function depends on the lower-level `readChar` and `writeChar` functions
 
 ![better-encryption-prg](/img/better-encryption.PNG)
 - A better architecture is shown above, all dependencies point inward
 - `ConsoleReader` and `ConsoleWrite` are low level because they are close to the inputs and outputs
 - **This structure decouples the high-level encryption policy from the lower-level input/output policies**
 - This makes the encryption policy usable in a wide range of contexts. When changes are made to the input and output policies, they are not likely to affect the encryption policy
+
+# <a name="business-rules">20. Boundaries: Business Rules</a> 
+- Business rules are rules or procedures that make or save the business money. These rules would make or save the business money
+- For example, a bank charges N% interest for a loan is a business rule that makes the bank money 
+
+### Entities
+- An Entity is an object within our computer system that embodies a small set of critical business rules operating on Critical Business Data
+
+![Loan-Entity](/img/Loan-Entity.PNG)
+- This example shows a Loan entity, and it implements a concept that is critical to the business, and is seperated from every other concern (DB, U, framework, etc)
+
+### Use Cases
+
+![use-case](/img/use-case.PNG)
+-  A use case is a description of the way that an automated system is used. It specifies the input to be provided by the user, the output to be returned to the user, and the processing steps involved in producing that output
+- **Notice that the use case does not describe the user interface other than to informally specify the data coming in from that interface**
+- **This is very important. Use cases do not describe how the system appears to the user. Instead, they describe the application-specific rules that govern the interaction between the users and the Entities**
+- Entities are high level and use cases lower level (since use cases are closer to inputs and outputs). Therefore, use cases depend on Entities, not the other way around
+
+### Request and Response Models
+- Use case object should have no inkling about the way that data is communicated to the user, or to any other component
+- **We certainly don’t want the code within the use case to know about HTML or SQL**
+- The use case accepts simple request data structures for its input, and returns simple response data structures as its output
+- These data structures are not dependent on anything. They do not derive from standard framework interfaces such as HttpRequest and HttpResponse. They know nothing of the web, nor do they share any of the trappings of whatever user interface 
+- This lack of dependencies is critical
