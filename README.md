@@ -267,3 +267,22 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - In contrast, an architect who focuses too strongly on the CCP and REP will cause too many unneeded releases to be generated	
 - A good architect finds a position in that tension triangle that meets the current concerns of the development team, but is also aware that those concerns will change over time
 - For example, early in the development of a project, the CCP is much more important than the REP, because developability is more important than reuse
+
+# <a name="coupling">14. Component Principles: Coupling</a> 
+- The “morning after syndrome” occurs in when developers are modifying the same source files
+- **Two solutions to this problem are:** The weekly build - The Acyclic Dependencies Principle (ADP)
+
+### The Acyclic Dependencies Principle (ADP)
+- Definition: Allow no cycles in the component dependency graph
+
+### The Weekly Build
+- **How it works:**
+  * All developers ignore each other for the first four days of the week
+  * They all work on private copies of the code, and don’t worry about integrating their work on a collective basis
+  * Then, on Friday, they integrate all their changes and build the system
+- This solution raises another problem, which is that makes integration challenging and may produce more time spent on a project.
+- To solve this,  partition the development environment into releasable components as the below point
+
+### Eliminating Dependency Cycles
+- The components become units of work that can be the responsibility of a single developer/developers
+- However, you must manage the dependency structure of the components. There can be no cycles
