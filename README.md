@@ -15,6 +15,9 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 9. [Design Principles of SOLID: LSP](#lsp)
 10. [Design Principles of SOLID: ISP](#isp)
 11. [Design Principles of SOLID: DIP](#dip)
+12. [Components](#components)
+13. [Component Principles: Cohesion](#cohesion) 
+14. [Component Principles: Coupling](#coupling) 
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -200,7 +203,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 ![architect](/img/architect.PNG)
 - We see that S depends on F, and F depends on D. Any changes in D will force redeployment in S and F, which can cause issues
 
-# <a name="dip">10. DIP: The Dependency Inversion Principle</a> 
+# <a name="dip">11. DIP: The Dependency Inversion Principle</a> 
 - DIP tells us that the most flexible systems are those in which source code dependencies refer only to abstractions, not to concretions
 - In other words, 'import', 'use', and 'include' should refer to interfaces and abstract classes only, not concrete classes
 - Rules of DIP:
@@ -222,3 +225,45 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 - The *abstract* component contains all the high-level business rules of the application. The *concrete* component contains all the implementation details that those business rules manipulate
 - Note the flow of control crosses the curved line in the opposite direction of the source code dependencies
 - The source code dependencies are inverted against the flow of control—which is why we refer to this principle as **Dependency Inversion**
+
+# <a name="components">12. Components</a> 
+- If the SOLID principles tell us how to arrange the bricks into walls and rooms, then the component principles tell us how to arrange the rooms into buildings
+- Large software systems, like large buildings, are built out of smaller component
+
+## Components
+- Components are the units of deployment. They are the smallest entities that can be deployed as part of a system. In Java, they are jar files
+- Components can be linked together into a single executable. Or they can be aggregated together into a single archive, such as a .war file. Or they can be independently deployed as separate dynamically loaded plugins, such as.jar or .dll or .exe files
+
+# <a name="cohesion">13. Component Principles: Cohesion</a> 
+**- The three principles of component cohesion:**
+  * REP: The Reuse/Release Equivalence Principle
+  * CCP: The Common Closure Principle
+  * CRP: The Common Reuse Principle
+  
+## REP: The Reuse/Release Equivalence Principle
+- Definition: The granule of reuse is the granule of release
+- Only components that are released through a tracking system can be effectively reused
+- It's common for developers to be alerted about a new release and decide, based on the changes made in that release, to continue to use the old release or not
+- Classes and modules that are grouped together into a component should be releasable together
+
+## CCP: The Common Closure Principle 
+- Definition: Gather into components those classes that change for the same reasons and at the same times. Separate into different components those classes that change at different times and for different reasons
+- This is the SRP restated for components. Just as the SRP says that a class should not contain multiples reasons to change, so the CCP says that a component should not have multiple reasons to change
+
+## CRP: The Common Reuse Principle 
+- Definition: Don’t force users of a component to depend on things they don’t need
+- When one component uses another, a dependency is created between the components
+- Because of that dependency, every time the used component is changed, the using component will likely need corresponding changes
+- All in all, Don’t depend on things you don’t need
+
+## The Tension Diagram for Component Cohesion
+
+![tension-diagram](/img/tension-diagram.PNG)
+- The REP and CCP are inclusive principles: Both tend to make components larger
+- The CRP is an exclusive principle, driving components to be smaller
+- It is the tension between these principles that good architects seek to resolve
+- The edges of the diagram above describe the cost of abandoning the principle 
+- An architect who focuses on just the REP and CRP will find that too many components are impacted when simple changes are made
+- In contrast, an architect who focuses too strongly on the CCP and REP will cause too many unneeded releases to be generated	
+- A good architect finds a position in that tension triangle that meets the current concerns of the development team, but is also aware that those concerns will change over time
+- For example, early in the development of a project, the CCP is much more important than the REP, because developability is more important than reuse
