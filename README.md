@@ -25,6 +25,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 19. [Policy and Level](#policy-level) 
 20. [Business Rules](#business-rules) 
 21. [The Clean Architecture](#clean-architecture)
+22. [Services: Great and Small](#services)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -417,3 +418,25 @@ function encrypt() {
 ![exp-figure](/img/exp-figure.PNG)
 
 ![exp-figure(2)](/img/exp-figure(2).PNG)
+
+# <a name="services">22. Services: Great and Small</a>
+- Services, or microservices, appear to support independence of development and deployment. Again, as we shall see, this is only partially true
+- Even though they are decoupled, they still share resources/networks
+
+## The Kitty Problem
+
+![taxi](/img/taxi.png)
+- Imagine we have a taxi aggregator system, and developers announced a new feature, kitten delivery service to the city. Users can order kittens to be delivered to their homes or to their places of business
+- Of course, some drivers and customers will be allergic and can't use the new service
+- Looking at the diagram, all of the services will need to be changed to add the new feature because the services are coupled and cannot be independently developed
+
+## Objects to the rescue
+
+![objects-taxi](/img/objects-taxi.png)
+- To solve the above example when adding the new feature, we carefully follow SOLID principles. Much of the logic is preserved within the base classes
+- The `Ride` and `Kittens` components now ovveride the abstract base classes using the *Template Method* pattern
+- The 2 components also follow the dependency rule, and the classes that implement those features are created by factories under the control of the UI
+
+![dependency-objects-taxi](/img/dependency-objects-taxi.png)
+- Services must be designed with internal component architectures that follow the Dependency Rule, like shown above
+- Those services do not define the architectural boundaries of the system; instead, the components within the services do
