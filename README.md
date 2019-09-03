@@ -26,6 +26,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 20. [Business Rules](#business-rules) 
 21. [The Clean Architecture](#clean-architecture)
 22. [Services: Great and Small](#services)
+23. [Test Boundaries](#tests)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -436,8 +437,18 @@ function encrypt() {
 ![objects-taxi](/img/objects-taxi.png)
 - To solve the above example when adding the new feature, we carefully follow SOLID principles and create a set of classes that could be polymorphically extended to handle new features. Much of the logic is preserved within the base classes via **components**
 - The `Ride` and `Kittens` components now ovveride the abstract base classes using the *Template Method* and *Strategy* patterns
+
+![services-internal-component](/img/services-internal-component.png)
 - The 2 components also follow the dependency rule, and the classes that implement those features are created by factories under the control of the UI
 
 ![dependency-objects-taxi](/img/dependency-objects-taxi.png)
 - Services must be designed with internal component architectures that follow the Dependency Rule, like shown above
 - Those services do not define the architectural boundaries of the system; instead, the components within the services do
+
+# <a name="tests">23. Test Boundaries</a>
+- Test need not to be isolated from system designs. Test that break when designs changed are called 'Fragile Test problems'
+
+
+# Testing API
+- Use APIs to decouple the structure of the tests from the structure of the application (exs: verify business rules, and detatch tests from UI)
+- The role of the testing API is to hide the structure of the application from the tests. This allows the production code to be refactored and evolved in ways that don’t affect the tests
