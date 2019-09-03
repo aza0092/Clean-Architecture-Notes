@@ -421,7 +421,8 @@ function encrypt() {
 
 # <a name="services">22. Services: Great and Small</a>
 - Services, or microservices, appear to support independence of development and deployment. Again, as we shall see, this is only partially true
-- Even though they are decoupled, they still share resources/networks
+- Even though they are decoupled, they still share resources/networks or the data they share
+- For example, if a new field is added to a data record that is passed between services, then every service that operates on the new field must be changed
 
 ## The Kitty Problem
 
@@ -433,8 +434,8 @@ function encrypt() {
 ## Objects to the rescue
 
 ![objects-taxi](/img/objects-taxi.png)
-- To solve the above example when adding the new feature, we carefully follow SOLID principles. Much of the logic is preserved within the base classes
-- The `Ride` and `Kittens` components now ovveride the abstract base classes using the *Template Method* pattern
+- To solve the above example when adding the new feature, we carefully follow SOLID principles and create a set of classes that could be polymorphically extended to handle new features. Much of the logic is preserved within the base classes via **components**
+- The `Ride` and `Kittens` components now ovveride the abstract base classes using the *Template Method* and *Strategy* patterns
 - The 2 components also follow the dependency rule, and the classes that implement those features are created by factories under the control of the UI
 
 ![dependency-objects-taxi](/img/dependency-objects-taxi.png)
