@@ -27,6 +27,7 @@ My personal notes on the book Clean Architecture: A Craftsman's Guide to Softwar
 21. [The Clean Architecture](#clean-architecture)
 22. [Services: Great and Small](#services)
 23. [Test Boundaries](#tests)
+24. [Case Study: Video Sales](#video-sales)
 
 # <a name="design-architecture">1. What is Design and Architecture</a>
 
@@ -446,9 +447,36 @@ function encrypt() {
 - Those services do not define the architectural boundaries of the system; instead, the components within the services do
 
 # <a name="tests">23. Test Boundaries</a>
-- Test need not to be isolated from system designs. Test that break when designs changed are called 'Fragile Test problems'
+- Test need not to be isolated from system designs. Test that break when designs change are called 'Fragile Test problems'
 
 
-# Testing API
+### Testing API
 - Use APIs to decouple the structure of the tests from the structure of the application (exs: verify business rules, and detatch tests from UI)
 - The role of the testing API is to hide the structure of the application from the tests. This allows the production code to be refactored and evolved in ways that don’t affect the tests
+
+# <a name="video-sales">23. Case Study: Video Sales</a>
+- The case study is a software that sells videos like cleancoders
+- The first step to draw the architecture is to identify the actors and use cases
+
+### Use Case Analysis
+
+![use-case-analysis](/img/use-case-analysis.PNG)
+- According to the Single Responsibility Principle, these four actors will be the four primary sources of change for the system
+- A change to a feature in one actor will not affect any other actor
+- Note the dashed use cases. They are abstract use cases. An abstract use case is one that sets a general policy that another use case will flesh out
+
+![architecture](/img/architecture.PNG)
+- The double lines in the drawing represent architectural boundaries
+- Note the partitioning of views, presenters, interactors, and controllers
+- Note that each actor has their own categories
+- Each component will contain the views, presenters, interactors, and controllers 
+- Note the special components for the `Catalog View` and the `Catalog Presenter`. This is how the abstract View Catalog use case is dealt with
+
+### Dependency Management
+- The flow of control proceeds from right to left
+- Input occurs at the controllers, and that input is processed into a result by the interactors
+- The presenters then format the results, and the views display those presentations
+- Notice  the arrows do not all flow from the right to the left. The architecture is following the Dependency Rule
+- All dependencies cross the boundary lines in one direction, and they always point toward the components containing the **higher-level policy**
+- Note that the using relationships (open arrows) point with the flow of control, and that the inheritance relationships (closed arrows) point against the flow of control
+- This depicts our use of the Open–Closed Principle to make sure that the dependencies flow in the right direction, and that changes to low-level details do not ripple upward to affect high-level policies
